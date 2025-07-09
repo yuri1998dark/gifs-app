@@ -1,0 +1,10 @@
+<div class="bg-white rounded-lg shadow-md overflow-hidden">
+  <shared-lazy-image></shared-lazy-image>
+  <img
+    [src]="gif.images.downsized.url"
+    [alt]="gif.title"
+    class="w-full h-auto object-cover"
+    loading="lazy"
+  />
+  <p class="p-2 text-sm text-center truncate">{{ gif.title }}</p>
+</div>
