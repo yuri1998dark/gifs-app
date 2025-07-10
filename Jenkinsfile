@@ -2,30 +2,23 @@ pipeline {
     agent any
 
     environment {
-        GITHUB_TOKEN = credentials('github-token') 
         IMAGE_NAME = 'gifs-app-local'
         CONTAINER_NAME = 'gifs-app-container'
-        GIT_REPO = 'https://github.com/yuri1998dark/gifs-app.git'
-        GIT_BRANCH = 'development'
     }
 
+    options {
+        timeout(time: 10, unit: 'MINUTES')
+    }
 
     stages {
         stage('Validar entorno') {
             steps {
                 script {
-                    // Validar que Docker esté disponible
                     def dockerOk = sh(script: 'docker --version', returnStatus: true) == 0
                     if (!dockerOk) {
                         error "Docker no está disponible. Verifica instalación y permisos del usuario Jenkins."
                     }
                 }
-            }
-        }
-
-        stage('Clonar repositorio') {
-            steps {
-                git branch: "${GIT_BRANCH}", url: "${GIT_REPO}", credentialsId: 'github-token'
             }
         }
 
@@ -41,11 +34,8 @@ pipeline {
         stage('Deploy Local') {
             steps {
                 script {
-                    echo "🚀 Desplegando en localhost:4200"
-                    // Detener y eliminar contenedor previo si existe
+                    echo "🚀 Desplegando en http://localhost:4200"
                     sh "docker rm -f ${CONTAINER_NAME} || true"
-
-                    // Correr nuevo contenedor
                     sh "docker run -d -p 4200:80 --name ${CONTAINER_NAME} ${IMAGE_NAME}"
                 }
             }
