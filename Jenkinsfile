@@ -9,10 +9,6 @@ pipeline {
         GIT_BRANCH = 'development'
     }
 
-    options {
-        timeout(time: 10, unit: 'MINUTES') // evita que el job se quede colgado
-        ansiColor('xterm') // colores para logs más legibles
-    }
 
     stages {
         stage('Validar entorno') {
