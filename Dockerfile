@@ -10,6 +10,6 @@ RUN ng build --configuration production
 
 # Etapa 2: servidor NGINX para servir la app
 FROM nginx:alpine
-COPY --from=builder /app/dist/GifsApp /usr/share/nginx/html
+COPY --from=builder /app/dist/GifsApp/browser /usr/share/nginx/html
 EXPOSE 4567
 CMD ["nginx", "-g", "daemon off;"]
