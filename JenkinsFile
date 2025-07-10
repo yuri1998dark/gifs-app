@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+
+    environment {
+        GITHUB_TOKEN = credentials('github-token')
+    }
+
+    stages {
+        stage('Clonar código') {
+            steps {
+                git url: 'https://github.com/yuri1998dark/gifs-app/', credentialsId: 'github-token'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm install' // o 'mvn package', 'yarn build', etc.
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'npm test' // o tus pruebas
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh './deploy.sh' // script de despliegue o llamada a otro servidor
+            }
+        }
+    }
+}
